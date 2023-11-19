@@ -43,7 +43,12 @@ class Rssfeed extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
-
+    public function scopeWithEntities($query, $entityIds)
+    {
+        return $query->whereHas('tags', function($q) use ($entityIds) {
+            $q->whereIn('entity_id', $entityIds);
+        }, '>=', count($entityIds));
+    }
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
